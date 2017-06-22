@@ -2,6 +2,9 @@
   "name": "marko-hot-reload",
   "version": "1.0.0",
   "author": "Rubén Norte <ruben.norte@softonic.com>",
+  "contributors": [
+    "Alexander Sviridoff <alexander.sviridoff@softonic.com>"
+  ],
   "description": "Watch changes in Marko templates in a directory and notify Marko to hot reload them.",
   "keywords": [
     "marko",
