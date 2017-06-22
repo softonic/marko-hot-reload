@@ -1,0 +1,41 @@
+{
+  "name": "marko-hot-reload",
+  "version": "1.0.0",
+  "author": "Rubén Norte <ruben.norte@softonic.com>",
+  "description": "Watch changes in Marko templates in a directory and notify Marko to hot reload them.",
+  "keywords": [
+    "marko",
+    "hot",
+    "reload",
+    "watch",
+    "directory",
+    "templates"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "homepage": "https://github.com/softonic/marko-hot-reload",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "release": "npm version -m \"New version: %s\"",
+    "postrelease": "npm run push && npm publish",
+    "push": "git push origin master && git push origin --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softonic/marko-hot-reload.git"
+  },
+  "bugs": {
+    "url": "https://github.com/softonic/marko-hot-reload/issues"
+  },
+  "dependencies": {
+    "chokidar": "^1.7.0"
+  },
+  "peerDependencies": {
+    "marko": "^4.0.0"
+  },
+  "devDependencies": {
+    "marko": "^4.0.0"
+  }
+}
