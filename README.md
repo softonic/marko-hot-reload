@@ -12,7 +12,7 @@ npm install marko-hot-reload
 
 ```js
 const markoHotReload = require('marko-hot-reload');
-markoHotReload.watch({ templatesPath: '/path/to/templates/directory' });
+markoHotReload.enable({ templatesPath: '/path/to/templates/directory' });
 ```
 
 ## Contribute
