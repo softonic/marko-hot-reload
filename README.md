@@ -1,6 +1,6 @@
 # marko-hot-reload
 
-Watch changes in Marko templates in a directory and notify Marko to hot reload them.
+Watch changes in Marko templates in a folder and notify Marko to hot reload them.
 
 ## Installation
 
@@ -8,12 +8,71 @@ Watch changes in Marko templates in a directory and notify Marko to hot reload t
 npm install marko-hot-reload
 ```
 
+or with `yarn`:
+
+```bash
+yarn add marko-hot-reload
+```
+
 ## Usage
 
 ```js
 const markoHotReload = require('marko-hot-reload');
-markoHotReload.enable({ templatesPath: '/path/to/templates/directory' });
+
+const requiredTemplatesPath = '/path/to/templates/folder';
+const requiredPageTemplatesPath = '/path/to/pages/folder';
+
+// These options can prevent some issues on some Mac machines
+const optionalChokidarWatchOptions = {
+  usePolling: true,
+  interval: 1000,
+  useFsEvents: false,
+};
+
+const optionalLogger = {
+  info: () => {},
+  error: () => {},
+};
+
+markoHotReload.enable({
+  templatesPath: requiredTemplatesPath,
+  pageTemplatesPath: requiredPageTemplatesPath,
+  watchOptions: optionalChokidarWatchOptions,
+  logger: optionalLogger,
+});
 ```
+
+## The way it works
+
+Given this folder structure:
+
+```bash
+client
+  views
+    components
+    layout
+      desktop-layout.tpl
+      mobile-layout.tpl
+      components
+        header.tpl
+    pages
+      faq
+        desktop-index.tpl
+        mobile-index.tpl
+      home
+        desktop-index.tpl
+        mobile-index.tpl
+```
+
+If `header.tpl` is modified, the Hot Reload invalidates it and all its direct ancestors up to the templates folder, as well as all the page templates. I.e. all the files invalidated are:
+
+- /client/views/layout/components/header.tpl
+- /client/views/layout/desktop-layout.tpl
+- /client/views/layout/mobile-layout.tpl
+- /client/views/pages/faq/desktop-index.tpl
+- /client/views/pages/faq/mobile-index.tpl
+- /client/views/pages/home/desktop-index.tpl
+- /client/views/pages/home/mobile-index.tpl
 
 ## Contribute
 
