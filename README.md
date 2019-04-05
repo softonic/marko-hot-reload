@@ -44,7 +44,7 @@ markoHotReload.enable({
 
 ## The way it works
 
-Given this folder structure:
+Given this folders structure, with `templatesPath` = "/client/views" & `pageTemplatesPath`= "/client/views/pages" :
 
 ```bash
 client
@@ -64,7 +64,7 @@ client
         mobile-index.tpl
 ```
 
-If `header.tpl` is modified, the Hot Reload invalidates it and all its direct ancestors up to the templates folder, as well as all the page templates. I.e. all the files invalidated are:
+Whenever `header.tpl` is modified, the Hot Reload will invalidates it & all its direct ancestors up to the templates folder, as well as all the page templates. I.e. all the files invalidated are:
 
 - /client/views/layout/components/header.tpl
 - /client/views/layout/desktop-layout.tpl
