@@ -3,7 +3,8 @@
   "version": "1.0.2",
   "author": "Rubén Norte <ruben.norte@softonic.com>",
   "contributors": [
-    "Alexander Sviridoff <alexander.sviridoff@softonic.com>"
+    "Alexander Sviridoff <alexander.sviridoff@softonic.com>",
+    "Marc Mignonsin <marc.mignonsin@softonic.com>"
   ],
   "description": "Watch changes in Marko templates in a directory and notify Marko to hot reload them.",
   "keywords": [
@@ -33,7 +34,8 @@
     "url": "https://github.com/softonic/marko-hot-reload/issues"
   },
   "dependencies": {
-    "chokidar": "^1.7.0"
+    "chokidar": "^2.1.5",
+    "glob": "^7.1.3"
   },
   "peerDependencies": {
     "marko": "^4.0.0"
