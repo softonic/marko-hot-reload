@@ -53,18 +53,17 @@ const HotReload = {
     templatesPath,
     pageTemplatesPath,
     watchOptions,
+    fileModifiedOptions = {},
     logger = nullLogger,
   }) => {
     markoHotReload.enable();
 
     const handleFileModified = (modifiedPath) => {
-      const opt = {};
-
       invalidateCacheTree({
         templatesPath,
         pageTemplatesPath,
         modifiedPath,
-        invalidateFunc: p => markoHotReload.handleFileModified(p, opt),
+        invalidateFunc: p => markoHotReload.handleFileModified(p, fileModifiedOptions),
         logger,
       });
     };
