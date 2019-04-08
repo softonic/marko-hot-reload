@@ -29,6 +29,10 @@ const optionalChokidarWatchOptions = {
   useFsEvents: false,
 };
 
+const optionalFileModifiedOptions = {
+  silent: true,
+};
+
 const optionalLogger = {
   info: () => {},
   error: () => {},
@@ -38,6 +42,7 @@ markoHotReload.enable({
   templatesPath: requiredTemplatesPath,
   pageTemplatesPath: requiredPageTemplatesPath,
   watchOptions: optionalChokidarWatchOptions,
+  fileModifedOptions: optionalFileModifiedOptions,
   logger: optionalLogger,
 });
 ```
