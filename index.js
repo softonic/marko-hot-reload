@@ -7,14 +7,14 @@ const markoHotReload = require('marko/hot-reload');
 
 /**
  * @param {String} templatesPath
- * @param {String} pageTemplatesPath
+ * @param {Array<String>} pageTemplatesPaths
  * @param {String} modifiedPath
  * @param {Function} invalidateFunc
  * @param {Logger} logger
  */
 function invalidateCacheTree({
   templatesPath,
-  pageTemplatesPath,
+  pageTemplatesPaths,
   modifiedPath,
   invalidateFunc,
   logger,
@@ -30,7 +30,10 @@ function invalidateCacheTree({
   while (currentDir !== templatesPath) {
     glob(`${currentDir}/*.marko`, (error, markoTemplates) => {
       if (error) {
-        return logger.error({ error, currentDir }, 'Error while invalidating ancestors templates!');
+        return logger.error(
+          { error, currentDir },
+          'Error while invalidating ancestors templates!',
+        );
       }
       markoTemplates.forEach(p => invalidateFunc(p));
     });
@@ -38,11 +41,16 @@ function invalidateCacheTree({
   }
 
   // ...and all pages, checked.
-  glob(`${pageTemplatesPath}/*/*.marko`, (error, markoTemplates) => {
-    if (error) {
-      return logger.error({ error, pageTemplatesPath }, 'Error while invalidating pages templates!');
-    }
-    markoTemplates.forEach(p => invalidateFunc(p));
+  pageTemplatesPaths.forEach(pageTemplatesPath => {
+    glob(`${pageTemplatesPath}/*/*.marko`, (error, markoTemplates) => {
+      if (error) {
+        return logger.error(
+          { error, pageTemplatesPath },
+          'Error while invalidating pages templates!',
+        );
+      }
+      markoTemplates.forEach(p => invalidateFunc(p));
+    });
   });
 }
 
@@ -58,20 +66,29 @@ const HotReload = {
   }) => {
     markoHotReload.enable();
 
-    const handleFileModified = (modifiedPath) => {
+    const templatesPaths = Array.isArray(templatesPath)
+      ? templatesPath
+      : [templatesPath];
+
+    const pageTemplatesPaths = Array.isArray(pageTemplatesPath)
+      ? pageTemplatesPath
+      : [pageTemplatesPath];
+
+    const handleFileModified = (templatesPath, modifiedPath) => {
       invalidateCacheTree({
         templatesPath,
-        pageTemplatesPath,
+        pageTemplatesPaths,
         modifiedPath,
         invalidateFunc: p => markoHotReload.handleFileModified(p, fileModifiedOptions),
         logger,
       });
     };
 
-    chokidar
-      .watch(nodePath.join(templatesPath, '**', '*.marko'), watchOptions)
-      .on('change', p => handleFileModified(p))
-      .on('error', error => logger.error({ error }, 'Marko Hot Reload error!'));
+    templatesPaths.forEach(templatePath => chokidar
+      .watch(nodePath.join(templatePath, '**', '*.marko'), watchOptions)
+      .on('change', p => handleFileModified(templatePath, p))
+      .on('error', error => logger.error({ error }, 'Marko Hot Reload error!'))
+    );
 
     logger.info({ templatesPath, watchOptions }, 'Marko Hot Reload enabled.');
   },
